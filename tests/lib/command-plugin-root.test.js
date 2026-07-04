@@ -24,6 +24,8 @@ function test(name, fn) {
 const sessionsDoc = fs.readFileSync(path.join(__dirname, '..', '..', 'commands', 'sessions.md'), 'utf8');
 const skillHealthDoc = fs.readFileSync(path.join(__dirname, '..', '..', 'commands', 'skill-health.md'), 'utf8');
 const instinctStatusDoc = fs.readFileSync(path.join(__dirname, '..', '..', 'commands', 'instinct-status.md'), 'utf8');
+const telemetryReportDoc = fs.readFileSync(path.join(__dirname, '..', '..', 'commands', 'telemetry-report.md'), 'utf8');
+const costReportDoc = fs.readFileSync(path.join(__dirname, '..', '..', 'commands', 'cost-report.md'), 'utf8');
 
 test('sessions command uses shared inline resolver in all node scripts', () => {
   assert.strictEqual((sessionsDoc.match(/const _r = /g) || []).length, 6);
@@ -72,6 +74,26 @@ test('resolveEccRoot module covers current and legacy marketplace plugin roots',
 
   assert.ok(!INLINE_RESOLVE.includes('\\"'), 'Inline resolver should not require escaped double quotes');
   assert.ok(INLINE_RESOLVE.includes("scripts','lib','resolve-ecc-root"));
+});
+
+test('telemetry-report resolver never falls back to the caller cwd', () => {
+  assert.ok(telemetryReportDoc.includes('return base;'));
+  assert.ok(
+    !telemetryReportDoc.includes('return process.cwd();'),
+    'telemetry-report must not add <caller cwd>/src to PYTHONPATH'
+  );
+});
+
+test('telemetry-report rejects non-positive top values in node wrapper', () => {
+  assert.ok(telemetryReportDoc.includes('--top must be a positive integer'));
+  assert.ok(telemetryReportDoc.includes('top <= 0'));
+});
+
+test('cost-report records actual status without hardcoded python3 success path', () => {
+  assert.ok(costReportDoc.includes('REPORT_STATUS=$?'));
+  assert.ok(costReportDoc.includes('SUCCESS=0'));
+  assert.ok(!costReportDoc.includes('python3 "$ECC_ROOT/scripts/record_invocation.py"'));
+  assert.ok(!costReportDoc.includes('--success 1 || true'));
 });
 
 console.log(`Passed: ${passed}`);

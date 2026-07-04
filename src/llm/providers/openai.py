@@ -15,17 +15,17 @@ from llm.core.interface import (
     RateLimitError,
 )
 from llm.core.types import LLMInput, LLMOutput, Message, ModelInfo, ProviderType, ToolCall
-from llm.providers.constants import EMPTY_FILTERED_RESPONSE_ERROR
+from llm.providers.constants import EMPTY_FILTERED_RESPONSE_ERROR, openai_compat_client_api_key
 
 
 class OpenAIProvider(LLMProvider):
     provider_type = ProviderType.OPENAI
 
     def __init__(self, api_key: str | None = None, base_url: str | None = None) -> None:
+        self.api_key = api_key if api_key is not None else (os.environ.get("OPENAI_API_KEY") or "")
         self.client = OpenAI(
-            api_key=api_key or os.environ.get("OPENAI_API_KEY"),
+            api_key=openai_compat_client_api_key(self.api_key),
             base_url=base_url,
-            _enforce_credentials=False,
         )
         self._models = [
             ModelInfo(
@@ -119,7 +119,7 @@ class OpenAIProvider(LLMProvider):
         return self._models.copy()
 
     def validate_config(self) -> bool:
-        return bool(self.client.api_key)
+        return bool(self.api_key)
 
     def get_default_model(self) -> str:
         return "gpt-4o-mini"
