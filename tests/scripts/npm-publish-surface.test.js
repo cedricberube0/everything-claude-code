@@ -73,6 +73,7 @@ function buildExpectedPublishPaths(repoRoot) {
     "scripts/codex/merge-codex-config.js",
     "scripts/codex/merge-mcp-config.js",
     ".codex-plugin",
+    "omp",
     "plugins/ecc",
     ".mcp.json",
     "install.sh",
@@ -152,6 +153,8 @@ function main() {
         "assets/hero.png",
         "schemas/install-state.schema.json",
         "skills/backend-patterns/SKILL.md",
+        "omp/extension.mjs",
+        "omp/tools/index.js",
       ]) {
         assert.ok(
           packagedPaths.has(requiredPath),
