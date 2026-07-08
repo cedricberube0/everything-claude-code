@@ -277,6 +277,36 @@ function runTests() {
     }
   })) passed++; else failed++;
 
+  if (test('custom probe skips partial installs that lack the probed script', () => {
+    // A hooks-runtime-only install copies scripts/lib/ into ~/.claude but not
+    // top-level scripts like auto-update.js. With the default probe
+    // (scripts/lib/utils.js) that partial install shadows the full plugin
+    // root; probing for the script a caller actually needs must skip it.
+    const homeDir = createTempDir();
+    try {
+      const claudeDir = setupStandardInstall(homeDir);
+      const marketplaceRoot = setupLegacyPluginInstall(homeDir, ['marketplaces', 'ecc']);
+      fs.writeFileSync(path.join(marketplaceRoot, 'scripts', 'auto-update.js'), '// stub');
+
+      assert.strictEqual(
+        resolveEccRoot({ envRoot: '', homeDir }),
+        claudeDir,
+        'default probe should still prefer the standard install'
+      );
+      assert.strictEqual(
+        resolveEccRoot({
+          envRoot: '',
+          homeDir,
+          probe: path.join('scripts', 'auto-update.js'),
+        }),
+        marketplaceRoot,
+        'auto-update probe should skip the partial install and find the full plugin root'
+      );
+    } finally {
+      fs.rmSync(homeDir, { recursive: true, force: true });
+    }
+  })) passed++; else failed++;
+
   // ─── INLINE_RESOLVE ───
 
   if (test('INLINE_RESOLVE is a non-empty string', () => {
