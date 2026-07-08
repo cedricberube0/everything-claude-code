@@ -164,7 +164,6 @@ function main() {
         "examples/CLAUDE.md",
         "plugins/README.md",
         "scripts/ci/catalog.js",
-        "skills/skill-comply/SKILL.md",
       ]) {
         assert.ok(
           !packagedPaths.has(excludedPath),

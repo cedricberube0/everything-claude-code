@@ -2898,6 +2898,70 @@ function runTests() {
     cleanupTestDir(testDir);
   })) passed++; else failed++;
 
+  if (test('fails when a curated skill directory is not referenced by any module (#2431)', () => {
+    const testDir = createTestDir();
+    writeJson(path.join(testDir, 'manifests', 'install-modules.json'), {
+      version: 1,
+      modules: [
+        {
+          id: 'security',
+          kind: 'skills',
+          description: 'Security',
+          paths: ['skills/security-review'],
+          targets: ['claude'],
+          dependencies: [],
+          defaultInstall: false,
+          cost: 'medium',
+          stability: 'stable'
+        }
+      ]
+    });
+    writeJson(path.join(testDir, 'manifests', 'install-profiles.json'), {
+      version: 1,
+      profiles: {
+        core: { description: 'Core', modules: ['security'] },
+        developer: { description: 'Developer', modules: ['security'] },
+        security: { description: 'Security', modules: ['security'] },
+        research: { description: 'Research', modules: ['security'] },
+        full: { description: 'Full', modules: ['security'] }
+      }
+    });
+    writeInstallComponentsManifest(testDir, [
+      {
+        id: 'capability:security',
+        family: 'capability',
+        description: 'Security',
+        modules: ['security']
+      }
+    ]);
+    // Referenced skill exists; a second curated skill exists but no module claims it.
+    fs.mkdirSync(path.join(testDir, 'skills', 'security-review'), { recursive: true });
+    fs.writeFileSync(path.join(testDir, 'skills', 'security-review', 'SKILL.md'), '# ok\n');
+    fs.mkdirSync(path.join(testDir, 'skills', 'orphan-skill'), { recursive: true });
+    fs.writeFileSync(path.join(testDir, 'skills', 'orphan-skill', 'SKILL.md'), '# orphan\n');
+    // A non-skill directory (no SKILL.md) must NOT be flagged.
+    fs.mkdirSync(path.join(testDir, 'skills', 'shared-assets'), { recursive: true });
+    // A hidden directory must NOT be flagged even if it contains a SKILL.md.
+    fs.mkdirSync(path.join(testDir, 'skills', '.hidden-skill'), { recursive: true });
+    fs.writeFileSync(path.join(testDir, 'skills', '.hidden-skill', 'SKILL.md'), '# hidden\n');
+
+    const result = runValidatorWithDirs('validate-install-manifests', {
+      REPO_ROOT: testDir,
+      MODULES_MANIFEST_PATH: path.join(testDir, 'manifests', 'install-modules.json'),
+      PROFILES_MANIFEST_PATH: path.join(testDir, 'manifests', 'install-profiles.json'),
+      COMPONENTS_MANIFEST_PATH: path.join(testDir, 'manifests', 'install-components.json'),
+      MODULES_SCHEMA_PATH: modulesSchemaPath,
+      PROFILES_SCHEMA_PATH: profilesSchemaPath,
+      COMPONENTS_SCHEMA_PATH: componentsSchemaPath
+    });
+    assert.strictEqual(result.code, 1, 'Should fail on an unreferenced curated skill');
+    assert.ok(result.stderr.includes('skills/orphan-skill'), 'Should name the orphaned skill');
+    assert.ok(!result.stderr.includes('skills/security-review'), 'Should not flag referenced skills');
+    assert.ok(!result.stderr.includes('shared-assets'), 'Should not flag directories without SKILL.md');
+    assert.ok(!result.stderr.includes('.hidden-skill'), 'Should not flag hidden directories');
+    cleanupTestDir(testDir);
+  })) passed++; else failed++;
+
   if (test('fails when two install modules claim the same path', () => {
     const testDir = createTestDir();
     writeJson(path.join(testDir, 'manifests', 'install-modules.json'), {

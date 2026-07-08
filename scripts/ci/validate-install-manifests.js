@@ -131,6 +131,38 @@ function validateInstallManifests() {
     }
   }
 
+  // Curated-skill coverage: every skills/<name> directory with a SKILL.md must
+  // be claimed by some module, or full-profile installs silently skip it (#2431).
+  // Per docs/SKILL-PLACEMENT-POLICY.md, curated skills are always manifest-referenced.
+  const skillsRoot = path.join(REPO_ROOT, 'skills');
+  if (fs.existsSync(skillsRoot)) {
+    for (const entry of fs.readdirSync(skillsRoot, { withFileTypes: true })) {
+      // Skip hidden directories, matching validate-skills.js discovery.
+      if (!entry.isDirectory() || entry.name.startsWith('.') || !fs.existsSync(path.join(skillsRoot, entry.name, 'SKILL.md'))) {
+        continue;
+      }
+
+      // Covered when the skill dir or any of its ancestors is a claimed path.
+      let covered = false;
+      for (let candidate = `skills/${entry.name}`; candidate; candidate = candidate.slice(0, candidate.lastIndexOf('/'))) {
+        if (claimedPaths.has(candidate)) {
+          covered = true;
+          break;
+        }
+        if (!candidate.includes('/')) {
+          break;
+        }
+      }
+
+      if (!covered) {
+        console.error(
+          `ERROR: Curated skill skills/${entry.name} is not referenced by any install module`
+        );
+        hasErrors = true;
+      }
+    }
+  }
+
   const profiles = profilesData.profiles || {};
   const components = Array.isArray(componentsData.components) ? componentsData.components : [];
   const expectedProfileIds = ['core', 'developer', 'security', 'research', 'full'];

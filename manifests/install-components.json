@@ -189,7 +189,7 @@
     {
       "id": "capability:prediction-markets",
       "family": "capability",
-      "description": "Public, non-advisory prediction-market and Itô basket research workflows with gated Itô API access.",
+      "description": "Public, non-advisory prediction-market and It\u00f4 basket research workflows with gated It\u00f4 API access.",
       "modules": [
         "prediction-market-skills"
       ]
@@ -348,6 +348,14 @@
       "description": "Supply chain, logistics, procurement, and manufacturing domain skills.",
       "modules": [
         "supply-chain-domain"
+      ]
+    },
+    {
+      "id": "capability:healthcare",
+      "family": "capability",
+      "description": "Healthcare domain skills (EMR/EHR, CDSS, evaluation harnesses).",
+      "modules": [
+        "healthcare-domain"
       ]
     },
     {

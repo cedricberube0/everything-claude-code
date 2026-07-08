@@ -95,6 +95,7 @@
         "devops-infra",
         "machine-learning",
         "supply-chain-domain",
+        "healthcare-domain",
         "document-processing"
       ]
     }
