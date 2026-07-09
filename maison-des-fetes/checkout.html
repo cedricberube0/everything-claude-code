@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout — Maison des fêtes</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Gloock&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="checkout.css">
+</head>
+<body class="checkout-body">
+  <header class="co-header">
+    <div class="co-container co-header__inner">
+      <a class="brand" href="index.html" aria-label="Maison des fêtes home">
+        <img class="brand__mark" src="assets/logo.png" alt="" width="40" height="40">
+        <span class="brand__text">
+          <span class="brand__name">MAISON DES FÊTES</span>
+          <span class="brand__sub">SECURE CHECKOUT</span>
+        </span>
+      </a>
+      <a class="co-back" href="index.html">← Back to site</a>
+    </div>
+    <div class="co-header__trust">
+      <span>✓ Handmade in Ottawa</span>
+      <span>✓ Free local delivery</span>
+      <span>✓ Cancel anytime</span>
+    </div>
+  </header>
+
+  <main class="co-container co-grid">
+    <!-- FORM -->
+    <form class="co-form" id="checkout-form" novalidate>
+      <h1 class="co-title">Checkout</h1>
+
+      <p class="co-saved" id="co-saved" hidden>🏷 You saved $55</p>
+
+      <section class="co-express" aria-label="Express checkout">
+        <p class="co-express__label">Express checkout</p>
+        <div class="co-express__btns">
+          <button type="button" class="co-xbtn co-xbtn--shop" data-express>Shop Pay</button>
+          <button type="button" class="co-xbtn co-xbtn--pp" data-express>PayPal</button>
+          <button type="button" class="co-xbtn co-xbtn--g" data-express>G Pay</button>
+        </div>
+        <p class="co-express__note" id="co-express-note">Express options turn on once you connect a payment provider (see NOTES.md).</p>
+        <div class="co-or"><span>OR</span></div>
+      </section>
+
+      <section class="co-block">
+        <h2 class="co-block__title">1 · Contact</h2>
+        <label class="co-field">
+          <span>Email</span>
+          <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+        </label>
+      </section>
+
+      <section class="co-block">
+        <h2 class="co-block__title">2 · Delivery</h2>
+        <div class="co-row">
+          <label class="co-field"><span>First name</span><input name="first" autocomplete="given-name" required></label>
+          <label class="co-field"><span>Last name</span><input name="last" autocomplete="family-name" required></label>
+        </div>
+        <label class="co-field"><span>Address</span><input name="address" autocomplete="street-address" placeholder="123 Main St" required></label>
+        <div class="co-row">
+          <label class="co-field"><span>City</span><input name="city" autocomplete="address-level2" value="Ottawa" required></label>
+          <label class="co-field"><span>Province</span><input name="province" autocomplete="address-level1" value="ON" required></label>
+          <label class="co-field"><span>Postal code</span><input name="postal" autocomplete="postal-code" placeholder="K1A 0B1" required></label>
+        </div>
+        <label class="co-field"><span>Phone (for delivery)</span><input name="phone" type="tel" autocomplete="tel" placeholder="(613) 555-0123"></label>
+
+        <div class="co-ship" role="radiogroup" aria-label="Delivery method">
+          <label class="co-ship__opt">
+            <input type="radio" name="ship" value="ottawa" checked>
+            <span class="co-ship__body">
+              <span class="co-ship__name">Free hand-delivery — Ottawa</span>
+              <span class="co-ship__meta">Inside the greenbelt · delivered by hand</span>
+            </span>
+            <span class="co-ship__price">Free</span>
+          </label>
+          <label class="co-ship__opt">
+            <input type="radio" name="ship" value="canada">
+            <span class="co-ship__body">
+              <span class="co-ship__name">Ship across Ontario &amp; Québec</span>
+              <span class="co-ship__meta">Shipping billed separately, at cost</span>
+            </span>
+            <span class="co-ship__price">At cost</span>
+          </label>
+        </div>
+      </section>
+
+      <section class="co-block" id="gift-block">
+        <h2 class="co-block__title">3 · Gift note <span class="co-optional">optional</span></h2>
+        <label class="co-field">
+          <span>We'll write this out by hand and tuck it in the box</span>
+          <textarea name="giftnote" rows="3" placeholder="Happy birthday, Marianne — thinking of you this season."></textarea>
+        </label>
+      </section>
+
+      <section class="co-block">
+        <h2 class="co-block__title">4 · Payment</h2>
+        <div class="co-pay-note" id="pay-note">🔒 Demo checkout — no real charge is made yet. See NOTES.md to connect Stripe.</div>
+        <label class="co-field"><span>Card number</span><input name="card" inputmode="numeric" placeholder="1234 1234 1234 1234" autocomplete="cc-number"></label>
+        <div class="co-row">
+          <label class="co-field"><span>Expiry</span><input name="exp" placeholder="MM / YY" autocomplete="cc-exp"></label>
+          <label class="co-field"><span>CVC</span><input name="cvc" inputmode="numeric" placeholder="123" autocomplete="cc-csc"></label>
+        </div>
+        <label class="co-field"><span>Name on card</span><input name="cardname" autocomplete="cc-name"></label>
+      </section>
+
+      <button class="btn btn--primary co-submit" type="submit" id="place-order">Place order</button>
+      <p class="co-fineprint">By placing your order you agree to the two-season minimum on subscriptions. Cancel anytime after that from your account.</p>
+    </form>
+
+    <!-- SUMMARY -->
+    <aside class="co-summary">
+      <div class="co-summary__card">
+        <div class="co-summary__box">
+          <div class="co-summary__thumb" aria-hidden="true">Nº 01</div>
+          <div>
+            <p class="co-summary__name" id="sum-name">Seasonal subscription</p>
+            <p class="co-summary__sub" id="sum-sub">Autumn Box · delivered this season</p>
+          </div>
+        </div>
+
+        <div class="co-code">
+          <input id="disc-code" placeholder="Discount code or gift card" aria-label="Discount code">
+          <button type="button" id="disc-apply">Apply</button>
+        </div>
+        <p class="co-code__msg" id="disc-msg" hidden></p>
+
+        <dl class="co-summary__lines">
+          <div class="co-summary__line"><dt>Box price</dt><dd id="sum-regular">$280.00</dd></div>
+          <div class="co-summary__line co-summary__line--save" id="sum-discount-row"><dt>First-box discount</dt><dd id="sum-discount">−$55.00</dd></div>
+          <div class="co-summary__line"><dt>Delivery</dt><dd id="sum-delivery">Free (Ottawa)</dd></div>
+        </dl>
+
+        <div class="co-summary__total">
+          <span>Total due today</span>
+          <span id="sum-total">$225.00</span>
+        </div>
+        <p class="co-summary__recur" id="sum-recur">Then $245 each season · cancel anytime after two seasons.</p>
+
+        <ul class="co-trust">
+          <li><span aria-hidden="true">↩︎</span> 30-day money-back guarantee</li>
+          <li><span aria-hidden="true">✕</span> Cancel anytime after two seasons</li>
+          <li><span aria-hidden="true">★</span> The most trusted locally-made box in Ottawa</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <!-- success overlay -->
+  <div class="co-success" id="co-success" hidden>
+    <div class="co-success__card">
+      <img src="assets/logo.png" alt="" width="64" height="64">
+      <h2>Merci! Your order is in.</h2>
+      <p id="co-success-text">We've noted your Autumn box. You'll get a confirmation email shortly.</p>
+      <p class="co-success__demo">This is a demo confirmation — connect Stripe (see NOTES.md) to take real payments.</p>
+      <a class="btn btn--primary" href="index.html">Back to the site</a>
+    </div>
+  </div>
+
+  <script src="checkout.js" defer></script>
+</body>
+</html>
