@@ -9,6 +9,32 @@
   /* ---------- Data ---------- */
   var SEASON = 'Autumn'; // change to Summer / Winter / Spring to reskin content
 
+  /* ---------- Store config ----------
+     One place to control pricing, scarcity and the two purchase plans.
+     `sold` / `cap` drive the meter, the offer modal and the sold-out lock.
+     When the real backend counter is wired up (see NOTES.md), just set
+     CONFIG.sold from the server response and, if it returns >= cap, the
+     site locks itself to "Sold out" automatically. */
+  var CONFIG = {
+    cap: 50,        // hard limit — the true number of boxes for the season
+    sold: 22,       // number shown as "reserved" on the site (launch value)
+    soldOut: false, // force the sold-out state (auto-on when sold >= cap)
+    plans: {
+      subscription: {
+        kicker: 'SEASONAL SUBSCRIPTION',
+        regular: 280, price: 225,
+        headline: '20% off your first box',
+        desc: 'Your first seasonal box of handmade Ottawa goods, then $245/box each season · cancel anytime after two seasons.'
+      },
+      onetime: {
+        kicker: 'ONE-TIME BOX',
+        regular: 300, price: 280, // $300+ handmade value, yours for $280
+        headline: 'Save on a one-time box',
+        desc: 'The upcoming Autumn box — no commitment, perfect for gifting. Add a handwritten note at checkout.'
+      }
+    }
+  };
+
   var makers = [
     { name: 'Camille Roy', craft: 'Ceramics', place: 'Hintonburg',
       video: 'Camille wedging clay and pulling a bowl on the wheel',
@@ -40,8 +66,7 @@
     { q: 'Can I send one as a gift?', a: 'The one-time box was made for it. Add a note at checkout and we’ll write it out by hand.' }
   ];
 
-  var TICKS = 50;
-  var TICKS_SOLD = 32;
+  function isSoldOut() { return CONFIG.soldOut || CONFIG.sold >= CONFIG.cap; }
 
   var $ = function (sel, ctx) { return (ctx || document).querySelector(sel); };
   var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); };
@@ -172,8 +197,14 @@
   function renderMeter() {
     var track = $('#meter-track');
     if (!track) return;
+
+    var cap = CONFIG.cap;
+    var sold = Math.min(CONFIG.sold, cap);
+    var soldOut = isSoldOut();
+    var left = Math.max(0, cap - sold);
+
     var frag = document.createDocumentFragment();
-    for (var i = 0; i < TICKS; i++) {
+    for (var i = 0; i < cap; i++) {
       var t = document.createElement('span');
       t.className = 'tick';
       t.dataset.index = i;
@@ -181,17 +212,21 @@
     }
     track.appendChild(frag);
 
-    var left = TICKS - TICKS_SOLD;
     var flag = $('#meter-flag');
-    if (flag) flag.textContent = 'ONLY ' + left + ' LEFT ↓';
+    if (flag) flag.textContent = soldOut ? 'SOLD OUT' : ('ONLY ' + left + ' LEFT ↓');
 
-    // Animate the fill once the meter scrolls into view
+    var spoken = $('#meter-spoken');
+    if (spoken) spoken.textContent = soldOut
+      ? 'ALL ' + cap + ' BOXES SPOKEN FOR'
+      : sold + ' OF ' + cap + ' ALREADY SPOKEN FOR';
+
+    var fillCount = soldOut ? cap : sold;
     var animated = false;
     function fill() {
       if (animated) return;
       animated = true;
       $$('.tick', track).forEach(function (t, i) {
-        if (i < TICKS_SOLD) {
+        if (i < fillCount) {
           setTimeout(function () { t.classList.add('is-filled'); }, i * 14);
         }
       });
@@ -204,6 +239,104 @@
     } else {
       fill();
     }
+  }
+
+  /* ---------- Purchase / offer modal ---------- */
+  var lastFocused = null;
+
+  function openOffer(planKey) {
+    var plan = CONFIG.plans[planKey];
+    if (!plan) return;
+    var modal = $('#offer-modal');
+    if (!modal) return;
+
+    var pct = Math.round((plan.regular - plan.price) / plan.regular * 100);
+    var save = plan.regular - plan.price;
+    var sold = Math.min(CONFIG.sold, CONFIG.cap);
+    var left = Math.max(0, CONFIG.cap - sold);
+
+    $('#offer-kicker').textContent = plan.kicker;
+    $('#offer-title').textContent = pct > 0 ? (pct + '% off your ' + (planKey === 'subscription' ? 'first box' : 'box')) : plan.headline;
+    $('#offer-desc').textContent = plan.desc;
+    $('#offer-was').textContent = '$' + plan.regular;
+    $('#offer-now').textContent = '$' + plan.price;
+    $('#offer-save').textContent = save > 0 ? ('Save $' + save) : '';
+    $('#offer-sold').textContent = sold + ' of ' + CONFIG.cap;
+    $('#offer-left').textContent = 'only ' + left + ' left';
+    $('#offer-bar-fill').style.width = Math.round(sold / CONFIG.cap * 100) + '%';
+    $('#offer-checkout').setAttribute('href', 'checkout.html?plan=' + planKey);
+
+    lastFocused = document.activeElement;
+    modal.hidden = false;
+    document.body.classList.add('modal-open');
+    // next frame -> transition in
+    requestAnimationFrame(function () { modal.classList.add('is-open'); });
+    var cta = $('#offer-checkout');
+    if (cta) cta.focus();
+  }
+
+  function closeOffer() {
+    var modal = $('#offer-modal');
+    if (!modal || modal.hidden) return;
+    modal.classList.remove('is-open');
+    document.body.classList.remove('modal-open');
+    var done = function () {
+      modal.hidden = true;
+      modal.removeEventListener('transitionend', done);
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+    };
+    modal.addEventListener('transitionend', done);
+    // fallback if no transition fires
+    setTimeout(function () { if (!modal.hidden && !modal.classList.contains('is-open')) done(); }, 320);
+  }
+
+  function initOffer() {
+    var modal = $('#offer-modal');
+    if (!modal) return;
+
+    // Wire every purchase button
+    $$('[data-buy]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (isSoldOut()) { goWaitlist(); return; }
+        openOffer(btn.getAttribute('data-buy'));
+      });
+    });
+
+    $$('[data-close]', modal).forEach(function (el) {
+      el.addEventListener('click', closeOffer);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeOffer();
+    });
+    // simple focus trap
+    modal.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+      var f = $$('a[href], button:not([disabled])', modal).filter(function (n) { return n.offsetParent !== null; });
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+  }
+
+  function goWaitlist() {
+    var news = $('#newsletter');
+    if (news) news.scrollIntoView({ behavior: 'smooth' });
+    var email = $('#email');
+    if (email) setTimeout(function () { email.focus(); }, 500);
+  }
+
+  /* ---------- Sold-out lock ----------
+     Turns the two plan CTAs into a waitlist prompt and dims the cards. */
+  function applySoldOut() {
+    if (!isSoldOut()) return;
+    document.body.classList.add('is-sold-out');
+    $$('[data-buy]').forEach(function (btn) {
+      // hero buttons keep their look; plan CTAs become waitlist
+      if (btn.classList.contains('plan__cta')) {
+        btn.textContent = 'Sold out — join the waitlist';
+      }
+    });
   }
 
   /* ---------- Mobile nav ---------- */
@@ -319,6 +452,8 @@
     renderMakers();
     renderFaq();
     renderMeter();
+    initOffer();
+    applySoldOut();
     initNav();
     initStickyHeader();
     initReveal();

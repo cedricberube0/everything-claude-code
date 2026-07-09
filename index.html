@@ -73,8 +73,8 @@
           <h1 class="hero__title">Handmade for the season you're in.</h1>
           <p class="hero__lead">Four times a year, a hand-picked surprise box of ceramics, candles, textiles, soap, art and more. Made by Ottawa-area artisans, delivered with the season.</p>
           <div class="hero__actions">
-            <a class="btn btn--primary btn--lg" href="#join">Subscribe&nbsp;&nbsp;$225 first box</a>
-            <a class="btn btn--outline btn--lg" href="#join">One-time box&nbsp;&nbsp;$280</a>
+            <button type="button" class="btn btn--primary btn--lg" data-buy="subscription">Subscribe&nbsp;&nbsp;$225 first box</button>
+            <button type="button" class="btn btn--outline btn--lg" data-buy="onetime">One-time box&nbsp;&nbsp;$280</button>
           </div>
           <p class="hero__fineprint">Free local delivery in Ottawa · then $245/box · two-season minimum</p>
         </div>
@@ -120,7 +120,7 @@
       <div class="container">
         <p class="eyebrow eyebrow--terracotta">WHAT'S INSIDE</p>
         <div class="inside__head">
-          <h2 class="section__title">Inside the <span data-season>Autumn</span> box</h2>
+          <h2 class="section__title">What's Inside the Box</h2>
           <p class="inside__intro">Not every craft appears in every box. The mix rotates, and new makers join every season. That's the fun of it.</p>
         </div>
 
@@ -180,7 +180,7 @@
             <p class="plan__desc">A surprise box every season · two-season minimum · free local delivery in Ottawa</p>
             <p class="plan__value">$300+ handmade value inside<br>Save $75+</p>
             <p class="plan__scrawl">THAT'S LESS THAN $2.50 PER DAY</p>
-            <a class="btn btn--primary plan__cta" href="#newsletter">Subscribe now</a>
+            <button type="button" class="btn btn--primary plan__cta" data-buy="subscription">Subscribe now</button>
           </article>
 
           <!-- One-time -->
@@ -194,7 +194,7 @@
             </div>
             <p class="plan__desc">The upcoming <span data-season>Autumn</span> box, no commitment · perfect for gifting · add a handwritten note at checkout</p>
             <p class="plan__value">$300+ handmade value inside<br>Save $20+</p>
-            <a class="btn btn--outline plan__cta" href="#newsletter">Buy the <span data-season>Autumn</span> box</a>
+            <button type="button" class="btn btn--outline plan__cta" data-buy="onetime">Buy the <span data-season>Autumn</span> box</button>
           </article>
         </div>
 
@@ -204,7 +204,7 @@
           <div class="meter__track" id="meter-track" aria-hidden="true"></div>
           <div class="meter__labels">
             <span><span data-season-upper>AUTUMN</span> '26 SEASONAL BOXES</span>
-            <span class="meter__spoken">32 OF 50 ALREADY SPOKEN FOR</span>
+            <span class="meter__spoken" id="meter-spoken">32 OF 50 ALREADY SPOKEN FOR</span>
           </div>
         </div>
 
@@ -270,6 +270,51 @@
       </div>
     </footer>
   </main>
+
+  <!-- Purchase / offer modal (populated by JS) -->
+  <div class="modal" id="offer-modal" hidden>
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="offer-title" aria-describedby="offer-desc">
+      <button class="modal__close" type="button" aria-label="Close" data-close>&times;</button>
+
+      <div class="offer__head">
+        <img class="offer__mark" src="assets/logo.png" alt="" width="46" height="46">
+        <div>
+          <p class="offer__kicker" id="offer-kicker">SEASONAL SUBSCRIPTION</p>
+          <p class="offer__box">Autumn Box Nº 01 · <span data-season>Autumn</span> '26</p>
+        </div>
+      </div>
+
+      <p class="offer__unlock" id="offer-unlock">✓ You've unlocked <strong>free local delivery in Ottawa</strong></p>
+
+      <p class="offer__discount" id="offer-title">20% off your first box</p>
+      <p class="offer__desc" id="offer-desc">Your first seasonal box of handmade Ottawa goods, then $245/box each season.</p>
+
+      <div class="offer__price">
+        <span class="offer__was" id="offer-was">$280</span>
+        <span class="offer__now" id="offer-now">$225</span>
+        <span class="offer__save" id="offer-save">Save $55</span>
+      </div>
+
+      <!-- scarcity -->
+      <div class="offer__scarcity">
+        <div class="offer__bar" aria-hidden="true"><span id="offer-bar-fill"></span></div>
+        <p class="offer__scarcity-text">
+          <strong id="offer-sold">22 of 50</strong> boxes reserved —
+          <strong id="offer-left">only 28 left</strong> this season
+        </p>
+      </div>
+
+      <a class="btn btn--primary offer__cta" id="offer-checkout" href="checkout.html?plan=subscription">Continue to checkout</a>
+      <button class="offer__dismiss" type="button" data-close>Keep browsing</button>
+
+      <ul class="offer__trust">
+        <li><span aria-hidden="true">↩︎</span> 30-day money-back guarantee</li>
+        <li><span aria-hidden="true">✕</span> Cancel anytime after two seasons</li>
+        <li><span aria-hidden="true">★</span> The most trusted locally-made box in Ottawa</li>
+      </ul>
+    </div>
+  </div>
 
   <script src="script.js" defer></script>
 </body>
