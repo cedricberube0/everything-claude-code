@@ -97,13 +97,22 @@ cookie banner needed).
 
 ## 3. The real box counter (start at 22, count from 0, sold out at 50)
 
-Today the counter is a **display value** set in one place — `script.js`:
+**Chosen approach: (c) show the true number from 0** — fully honest. The
+on-screen count equals real sales: it starts at `0 of 50` and climbs one box
+per real order, locking to **Sold out** at 50.
+
+The counter is a single value in `script.js`:
 ```js
-var CONFIG = { cap: 50, sold: 22, soldOut: false, ... };
+var CONFIG = { cap: 50, sold: 0, soldOut: false, ... };
 ```
-Change `sold` and the meter, the drawer scarcity bar and the "X of 50" label
-all update. Set `soldOut: true` (or `sold: 50`) and the whole site locks to
+`sold` is the **real** sales count. Change it (or point it at your store /
+Stripe) and the meter, the drawer scarcity bar and the "X of 50" label all
+update. Set `soldOut: true` (or `sold: 50`) and the whole site locks to
 **Sold out** and the buttons become "join the waitlist."
+
+> Right now `sold: 0`, so the site truthfully shows "0 of 50 · 50 left" until
+> real orders exist. If you ever want to hand-set it (e.g. after phone/market
+> sales), just edit that one number and redeploy.
 
 But a static site can't *count real sales* — every visitor's browser is
 separate, and GitHub Pages has no database. To make it real you need a tiny
@@ -118,25 +127,15 @@ each sale and marks it sold out at 0 — then you just mirror that number.
 - A `GET /api/boxes` returns `{ realSold }`.
 - On page load, fetch it and set the display:
   ```js
+  // Option (c) — show the true number from 0:
   fetch('/api/boxes').then(r => r.json()).then(({ realSold }) => {
-    CONFIG.sold = Math.min(CONFIG.cap, DISPLAY_START + realSold); // see note
-    CONFIG.soldOut = realSold >= CONFIG.cap;                      // true cap = real sales
+    CONFIG.sold = Math.min(CONFIG.cap, realSold);
+    CONFIG.soldOut = realSold >= CONFIG.cap;
     renderMeter(); applySoldOut();
   });
   ```
 
-### ⚠️ One decision I need from you
-You said: show **22** at launch, but **actually** count from 0 and go sold-out
-at **50 real sales**. Those two can't both be literally true unless we decide
-how the on-screen number moves. Which do you want?
-
-- **(a) Head start:** screen shows `22 + realSales`. Feels busy immediately,
-  but it would read "72 of 50" by the time you truly sell 50. We'd cap the
-  *label* at 50 while the true cap is 50 real sales. (Most common growth-marketing choice.)
-- **(b) Honest scaling:** screen starts at 22 and climbs to exactly 50 as real
-  sales go 0→50 (so "50 of 50" == genuinely sold out). Cleaner story, slightly
-  slower-looking momentum.
-- **(c) Truthful:** screen shows the real number from 0. Simplest and fully honest.
-
-Tell me **a, b, or c** and I'll wire the counter to match when you set up the
-backend/store. Until then the site safely shows a fixed `22 of 50`.
+That's the whole counter: the endpoint returns how many boxes have really
+sold, the site shows it, and at 50 it locks itself to **Sold out**. Nothing
+else to decide — I'll drop this fetch in when you pick a store/Stripe and have
+the endpoint (or inventory) ready.

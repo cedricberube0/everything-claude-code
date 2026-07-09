@@ -17,7 +17,10 @@
      site locks itself to "Sold out" automatically. */
   var CONFIG = {
     cap: 50,        // hard limit — the true number of boxes for the season
-    sold: 22,       // number shown as "reserved" on the site (launch value)
+    sold: 0,        // REAL sales count (truthful, option c). Starts at 0 and
+                    // climbs as real orders come in. Wire this to your store /
+                    // Stripe count when payments go live (see NOTES.md); the
+                    // meter, drawer scarcity and sold-out lock all follow it.
     soldOut: false, // force the sold-out state (auto-on when sold >= cap)
     plans: {
       subscription: {
