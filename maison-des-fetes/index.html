@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maison des fêtes — Handmade seasonal boxes from Ottawa artisans</title>
+  <meta name="description" content="Four times a year, a hand-picked surprise box of ceramics, candles, textiles, soap and art — made by Ottawa-area artisans and delivered with the season.">
+  <meta name="theme-color" content="#A94E24">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Maison des fêtes — House of Celebrations, Ottawa">
+  <meta property="og:description" content="A quarterly surprise box of handmade goods from local Ottawa artisans.">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+
+  <!-- Mark that JS is available before render-blocking CSS, so reveal
+       animations only hide content when JS can bring it back. -->
+  <script>document.documentElement.classList.add('js');</script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Gloock&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Announcement ribbon -->
+  <div class="ribbon" id="ribbon">
+    <div class="ribbon__inner">
+      <span class="ribbon__tag">THE <span data-season-upper>AUTUMN</span> BOX</span>
+      <span class="ribbon__dot" aria-hidden="true"></span>
+      <span>ships in <strong data-days-to-ship>—</strong> — reserve yours before <strong>August 15</strong></span>
+    </div>
+  </div>
+
+  <!-- Header / nav -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="#top" aria-label="Maison des fêtes home">
+        <img class="brand__mark" src="assets/logo.png" alt="" width="44" height="44">
+        <span class="brand__text">
+          <span class="brand__name">MAISON DES FÊTES</span>
+          <span class="brand__sub">HOUSE OF CELEBRATIONS · OTTAWA</span>
+        </span>
+      </a>
+
+      <nav class="nav__links" id="nav-links" aria-label="Primary">
+        <a href="#the-box">The Box</a>
+        <a href="#makers">Makers</a>
+        <a href="#join">Join</a>
+        <a class="btn btn--primary btn--sm" href="#join">Reserve your box</a>
+      </nav>
+
+      <button class="nav__toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <span id="top"></span>
+
+    <!-- HERO -->
+    <section class="hero section">
+      <div class="container hero__grid">
+        <div class="hero__copy reveal">
+          <p class="eyebrow">QUARTERLY BOXES · HANDMADE IN OTTAWA</p>
+          <h1 class="hero__title">Handmade for the season you're in.</h1>
+          <p class="hero__lead">Four times a year, a hand-picked surprise box of ceramics, candles, textiles, soap, art and more. Made by Ottawa-area artisans, delivered with the season.</p>
+          <div class="hero__actions">
+            <a class="btn btn--primary btn--lg" href="#join">Subscribe&nbsp;&nbsp;$225 first box</a>
+            <a class="btn btn--outline btn--lg" href="#join">One-time box&nbsp;&nbsp;$280</a>
+          </div>
+          <p class="hero__fineprint">Free local delivery in Ottawa · then $245/box · two-season minimum</p>
+        </div>
+
+        <div class="hero__media reveal">
+          <button class="media-frame" type="button" aria-label="Play video: artisan shaping a bowl at the wheel">
+            <span class="play-btn" aria-hidden="true">▶</span>
+            <span class="media-frame__caption">[ video: artisan shaping a bowl at the wheel ]</span>
+          </button>
+
+          <div class="wax-seal" aria-hidden="true">
+            <span class="wax-seal__no">BOX Nº</span>
+            <span class="wax-seal__num">01</span>
+            <span class="wax-seal__season"><span data-season-upper>AUTUMN</span> '26</span>
+          </div>
+
+          <div class="media-note">Now filming: Camille, ceramicist — Hintonburg</div>
+          <p class="media-scrawl">filmed in her studio, just a few weeks ago ↑</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="steps" aria-label="How it works">
+      <div class="container steps__grid">
+        <div class="step reveal">
+          <p class="step__title">01 — Makers make</p>
+          <p class="step__text">Local artisans craft small batches just for the box.</p>
+        </div>
+        <div class="step reveal">
+          <p class="step__title">02 — We curate</p>
+          <p class="step__text">Every shipment is a hand-selected surprise. Items rotate each season.</p>
+        </div>
+        <div class="step reveal">
+          <p class="step__title">03 — It arrives</p>
+          <p class="step__text">Delivered free in Ottawa, or shipped further afield.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE BOX -->
+    <section class="inside section" id="the-box">
+      <div class="container">
+        <p class="eyebrow eyebrow--terracotta">WHAT'S INSIDE</p>
+        <div class="inside__head">
+          <h2 class="section__title">Inside the <span data-season>Autumn</span> box</h2>
+          <p class="inside__intro">Not every craft appears in every box. The mix rotates, and new makers join every season. That's the fun of it.</p>
+        </div>
+
+        <div class="inside__grid" id="box-items">
+          <!-- cards injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- MAKERS (dark) -->
+    <section class="makers section" id="makers">
+      <div class="container">
+        <p class="eyebrow eyebrow--gold">MEET THE MAKERS</p>
+        <h2 class="section__title section__title--light">The hands behind the box</h2>
+
+        <div class="makers__grid">
+          <div class="makers__media">
+            <button class="media-frame media-frame--dark" type="button" aria-label="Play maker video">
+              <span class="play-btn play-btn--light" aria-hidden="true">▶</span>
+              <span class="media-frame__caption" id="maker-video">[ video ]</span>
+            </button>
+          </div>
+
+          <div class="makers__panel">
+            <div class="maker-feature">
+              <h3 class="maker-feature__name" id="maker-name">Camille Roy</h3>
+              <p class="maker-feature__tag" id="maker-tag">CERAMICS · HINTONBURG</p>
+              <p class="maker-feature__blurb" id="maker-blurb"></p>
+            </div>
+
+            <div class="maker-list" id="maker-list" role="tablist" aria-label="Choose a maker">
+              <!-- maker buttons injected by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING / JOIN -->
+    <section class="pricing section" id="join">
+      <div class="container">
+        <p class="eyebrow eyebrow--green">JOIN THE HOUSE</p>
+        <h2 class="section__title">Two ways to start supporting local.</h2>
+
+        <div class="pricing__grid">
+          <!-- Subscription -->
+          <article class="plan plan--featured">
+            <div class="plan__head">
+              <h3 class="plan__name">Seasonal subscription</h3>
+              <span class="badge badge--green">MOST LOVED</span>
+            </div>
+            <div class="plan__price">
+              <span class="plan__was">$280</span>
+              <span class="plan__now">$225</span>
+              <span class="plan__unit">first box price</span>
+            </div>
+            <p class="plan__desc">A surprise box every season · two-season minimum · free local delivery in Ottawa</p>
+            <p class="plan__value">$300+ handmade value inside<br>Save $75+</p>
+            <p class="plan__scrawl">THAT'S LESS THAN $2.50 PER DAY</p>
+            <a class="btn btn--primary plan__cta" href="#newsletter">Subscribe now</a>
+          </article>
+
+          <!-- One-time -->
+          <article class="plan plan--quiet">
+            <div class="plan__head">
+              <h3 class="plan__name">One-time box</h3>
+              <span class="badge badge--outline">GIFTABLE</span>
+            </div>
+            <div class="plan__price">
+              <span class="plan__now plan__now--dark">$280 <span class="plan__unit">once</span></span>
+            </div>
+            <p class="plan__desc">The upcoming <span data-season>Autumn</span> box, no commitment · perfect for gifting · add a handwritten note at checkout</p>
+            <p class="plan__value">$300+ handmade value inside<br>Save $20+</p>
+            <a class="btn btn--outline plan__cta" href="#newsletter">Buy the <span data-season>Autumn</span> box</a>
+          </article>
+        </div>
+
+        <!-- tick meter -->
+        <div class="meter">
+          <span class="meter__flag" id="meter-flag">ONLY 18 LEFT ↓</span>
+          <div class="meter__track" id="meter-track" aria-hidden="true"></div>
+          <div class="meter__labels">
+            <span><span data-season-upper>AUTUMN</span> '26 SEASONAL BOXES</span>
+            <span class="meter__spoken">32 OF 50 ALREADY SPOKEN FOR</span>
+          </div>
+        </div>
+
+        <div class="delivery">
+          <p class="delivery__text">
+            <span class="delivery__label">DELIVERY —</span>
+            Free hand-delivery within Ottawa. Outside Ottawa? We ship, and you cover the shipping at cost.
+          </p>
+          <svg class="tulips" viewBox="0 0 150 40" aria-hidden="true">
+            <g><path d="M15,40 L15,22" stroke="#5E7245" stroke-width="2"/><path d="M15,22 C9,22 7,14 8,9 C11,12 13,12 15,9 C17,12 19,12 22,9 C23,14 21,22 15,22 Z" fill="#C0433B"/></g>
+            <g><path d="M50,40 L50,18" stroke="#5E7245" stroke-width="2"/><path d="M50,18 C44,18 42,10 43,5 C46,8 48,8 50,5 C52,8 54,8 57,5 C58,10 56,18 50,18 Z" fill="#D9903F"/></g>
+            <g><path d="M85,40 L85,24" stroke="#5E7245" stroke-width="2"/><path d="M85,24 C79,24 77,16 78,11 C81,14 83,14 85,11 C87,14 89,14 92,11 C93,16 91,24 85,24 Z" fill="#B85C8A"/></g>
+            <g><path d="M120,40 L120,20" stroke="#5E7245" stroke-width="2"/><path d="M120,20 C114,20 112,12 113,7 C116,10 118,10 120,7 C122,10 124,10 127,7 C128,12 126,20 120,20 Z" fill="#C0433B"/></g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIAL + FAQ -->
+    <section class="proof section">
+      <div class="container proof__grid">
+        <div class="proof__quote reveal">
+          <p class="eyebrow">What people say</p>
+          <figure class="polaroid">
+            <div class="polaroid__photo">[ photo: autumn box styled on a mantel ]</div>
+            <blockquote class="polaroid__quote">"It's the one delivery I actually wait by the door for."</blockquote>
+            <figcaption class="polaroid__by">— Marianne, the Glebe · subscriber since box Nº 01</figcaption>
+          </figure>
+        </div>
+
+        <div class="proof__faq reveal">
+          <p class="eyebrow">GOOD QUESTIONS</p>
+          <h2 class="section__title section__title--sm">Before you ask</h2>
+          <div class="faq" id="faq">
+            <!-- faq items injected by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER + FOOTER -->
+    <footer class="footer" id="newsletter">
+      <div class="container">
+        <div class="footer__signup">
+          <div>
+            <p class="footer__title">First word, every season.</p>
+            <p class="footer__sub">Just a note when a new box is revealed and when maker spots open.</p>
+          </div>
+          <form class="signup" id="signup" novalidate>
+            <label class="visually-hidden" for="email">Email address</label>
+            <input class="signup__input" id="email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+            <button class="btn btn--gold signup__btn" id="signup-btn" type="submit">Sign up</button>
+          </form>
+        </div>
+
+        <div class="footer__bottom">
+          <div class="footer__brand">
+            <img class="footer__mark" src="assets/logo.png" alt="" width="36" height="36">
+            <span class="footer__name">MAISON DES FÊTES · HOUSE OF CELEBRATIONS <span class="footer__place">Ottawa, ON</span></span>
+          </div>
+          <p class="footer__legal">© 2026 Maison des fêtes</p>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
