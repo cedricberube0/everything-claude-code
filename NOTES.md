@@ -139,3 +139,37 @@ That's the whole counter: the endpoint returns how many boxes have really
 sold, the site shows it, and at 50 it locks itself to **Sold out**. Nothing
 else to decide — I'll drop this fetch in when you pick a store/Stripe and have
 the endpoint (or inventory) ready.
+
+---
+
+## 4. The quiz popup & the four landing pages
+
+The homepage shows a "watch the box get filled" popup (once per visitor):
+fill animation → *why do you want the box?* → email for the **BIENVENUE25**
+($25 off) code → redirect to a landing page matched to their answer:
+
+| Answer | Page |
+|---|---|
+| Support local makers | `why-local.html` |
+| Unique, handmade pieces | `why-handmade.html` |
+| Effortless holiday decorating | `why-decorating.html` |
+| Meaningful holiday traditions | `why-traditions.html` |
+
+Config lives at the top of `popup.js` (code, page mapping, box items).
+
+**Two things to wire before real launch:**
+
+1. **The emails go nowhere yet.** Quiz emails are saved only in the visitor's
+   own browser (`localStorage.mdf_quiz_email`, with their answer in
+   `mdf_quiz_answer`). To actually collect them, connect an email service —
+   Mailchimp/Klaviyo/Beehiiv all give you a form endpoint; replace the
+   localStorage lines in `popup.js` with a `fetch()` to that endpoint. Their
+   quiz answer makes a great segmentation tag for later campaigns.
+
+2. **The code is cosmetic until payments exist.** `BIENVENUE25` displays and
+   even applies −$25 on our demo checkout, but a *real* discount must be
+   created in Stripe (Coupon/Promotion Code) or Shopify (Discount code) with
+   the same name once you set payments up.
+
+**Funnel measurement:** each answer lands on its own URL, so in GA4 (or even
+Stripe) you can see which motivation converts best — that's your ad angle.

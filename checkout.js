@@ -106,7 +106,12 @@
     });
   }
 
-  function initExtras() {
+  var WELCOME_CODE = 'BIENVENUE25'; // matches the quiz popup reward
+  var WELCOME_OFF = 25;
+  var codeApplied = false;
+
+  function initExtras(key) {
+    var plan = PLANS[key];
     // express-checkout placeholders
     document.querySelectorAll('[data-express]').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -115,14 +120,30 @@
         note.style.color = 'var(--terracotta)';
       });
     });
-    // discount code (demo)
+    // discount code — BIENVENUE25 works, everything else waits for payments
     var apply = $('#disc-apply');
     if (apply) apply.addEventListener('click', function () {
       var msg = $('#disc-msg');
-      var code = ($('#disc-code').value || '').trim();
+      var code = ($('#disc-code').value || '').trim().toUpperCase();
       msg.hidden = false;
       if (!code) { msg.textContent = 'Enter a code first.'; msg.style.color = 'var(--ink-muted)'; return; }
-      msg.textContent = 'Discount codes activate once payments are connected (NOTES.md).';
+      if (code === WELCOME_CODE) {
+        if (codeApplied) { msg.textContent = 'Code already applied 🙂'; msg.style.color = 'var(--green)'; return; }
+        codeApplied = true;
+        var lines = document.querySelector('.co-summary__lines');
+        var row = document.createElement('div');
+        row.className = 'co-summary__line co-summary__line--save';
+        row.innerHTML = '<dt>Code ' + WELCOME_CODE + '</dt><dd>−' + money(WELCOME_OFF) + '</dd>';
+        lines.appendChild(row);
+        $('#sum-total').textContent = money(plan.price - WELCOME_OFF);
+        var saved = $('#co-saved');
+        saved.hidden = false;
+        saved.textContent = '🏷 You saved ' + money((plan.regular - plan.price) + WELCOME_OFF);
+        msg.textContent = 'Code applied — $25 off your first box 🎉';
+        msg.style.color = 'var(--green)';
+        return;
+      }
+      msg.textContent = 'That code isn’t recognized. Try BIENVENUE25 from the welcome offer.';
       msg.style.color = 'var(--ink-muted)';
     });
   }
@@ -132,7 +153,7 @@
     fillSummary(key);
     initDeliveryToggle();
     initForm(key);
-    initExtras();
+    initExtras(key);
   }
 
   if (document.readyState === 'loading') {
