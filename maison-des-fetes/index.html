@@ -316,6 +316,65 @@
     </div>
   </div>
 
+  <!-- Quiz / welcome popup (logic in popup.js) -->
+  <div class="quiz" id="quiz" hidden>
+    <div class="quiz__backdrop" data-quiz-close></div>
+    <div class="quiz__card" role="dialog" aria-modal="true" aria-labelledby="quiz-title">
+      <button class="quiz__close" type="button" data-quiz-close aria-label="Close">&times;</button>
+      <div class="quiz__dots" aria-hidden="true"><span class="is-on"></span><span></span><span></span></div>
+
+      <!-- Step 1 · fill the box -->
+      <section class="quiz__step is-active" data-step="fill">
+        <p class="quiz__kicker">A LITTLE MAGIC FIRST</p>
+        <h2 class="quiz__title" id="quiz-title">Watch the box get filled</h2>
+        <p class="quiz__sub">Six kinds of handmade, one Ottawa box. See what could be inside yours.</p>
+        <div class="quiz__scene">
+          <div class="quiz__box">
+            <div class="quiz__box-fill" id="quiz-box-fill"></div>
+            <span class="quiz__box-face">Nº 01</span>
+          </div>
+        </div>
+        <p class="quiz__caption" id="quiz-caption">&nbsp;</p>
+        <button class="btn btn--primary quiz__cta" id="quiz-fill-btn" type="button">Fill the box ✨</button>
+      </section>
+
+      <!-- Step 2 · why -->
+      <section class="quiz__step" data-step="why">
+        <p class="quiz__kicker">PACKED! 🎁 ONE QUICK QUESTION</p>
+        <h2 class="quiz__title">What brings you to the box?</h2>
+        <p class="quiz__sub">Tap the one that sounds most like you.</p>
+        <div class="quiz__answers">
+          <button type="button" class="quiz__answer" data-why="local">I want to support local makers</button>
+          <button type="button" class="quiz__answer" data-why="handmade">I want unique, handmade pieces</button>
+          <button type="button" class="quiz__answer" data-why="decorating">I want effortless holiday decorating</button>
+          <button type="button" class="quiz__answer" data-why="traditions">I want to create meaningful holiday traditions</button>
+        </div>
+      </section>
+
+      <!-- Step 3 · email + code -->
+      <section class="quiz__step" data-step="email">
+        <p class="quiz__kicker">LAST STEP</p>
+        <h2 class="quiz__title">Here's $25 off your first box</h2>
+        <p class="quiz__sub" id="quiz-email-sub">Pop in your email and your code appears right here.</p>
+        <form class="quiz__form" id="quiz-form" novalidate>
+          <label class="visually-hidden" for="quiz-email">Email address</label>
+          <input class="quiz__input" id="quiz-email" type="email" placeholder="you@example.com" autocomplete="email" required>
+          <button class="btn btn--primary quiz__form-btn" type="submit">Get my code</button>
+        </form>
+        <div class="quiz__reward" id="quiz-reward" hidden>
+          <p class="quiz__code" id="quiz-code">BIENVENUE25</p>
+          <p class="quiz__code-note">$25 off your first box · use it at checkout</p>
+          <button class="btn btn--primary quiz__cta" id="quiz-continue" type="button">Show me my kind of box →</button>
+        </div>
+        <p class="quiz__skip"><button type="button" class="quiz__skip-btn" data-quiz-close>No thanks, I'll pay full price</button></p>
+      </section>
+    </div>
+  </div>
+
+  <!-- reopen pill after dismissal -->
+  <button class="quiz-pill" id="quiz-pill" type="button" hidden>🎁 $25 off your first box</button>
+
   <script src="script.js" defer></script>
+  <script src="popup.js" defer></script>
 </body>
 </html>
