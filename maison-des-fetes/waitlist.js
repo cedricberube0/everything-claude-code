@@ -82,9 +82,11 @@
     } catch (e) { /* private mode — endpoint is the real store anyway */ }
 
     if (WAITLIST_ENDPOINT) {
+      // text/plain body = no CORS preflight, which Google Apps Script
+      // can't answer. The script JSON-parses the body server-side.
       fetch(WAITLIST_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(data)
       }).catch(function () { /* keep UX smooth; entry is still in localStorage */ });
     }

@@ -1,0 +1,108 @@
+/* =========================================================
+   Waitlist HQ — private CRM dashboard.
+   Single-series charts: terracotta marks only (validated on
+   the light surface); identity lives in ink text labels, so
+   no legend is needed and no adjacent-hue pair ever occurs.
+   ========================================================= */
+.crm { background: var(--bg); min-height: 100vh; }
+
+.crm-wrap { width: 100%; max-width: 1080px; margin-inline: auto; padding-inline: clamp(18px, 4vw, 36px); }
+
+/* header */
+.crm-header { background: var(--cream); border-bottom: 1px solid rgba(46, 36, 24, 0.14); position: sticky; top: 0; z-index: 20; }
+.crm-header__inner { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 66px; }
+.crm-header__actions { display: flex; align-items: center; gap: 10px; }
+.crm-updated { font: 500 11.5px var(--f-mono); color: var(--ink-muted); }
+
+.crm-btn {
+  border: 1.5px solid rgba(46, 36, 24, 0.25); border-radius: 999px; background: var(--cream-2);
+  color: var(--ink); font: 600 13.5px var(--f-body); padding: 9px 16px; cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease; text-decoration: none; display: inline-block;
+}
+.crm-btn:hover { background: rgba(46, 36, 24, 0.06); transform: translateY(-1px); color: var(--ink); }
+.crm-btn--primary { background: var(--terracotta); border-color: var(--terracotta); color: var(--cream); }
+.crm-btn--primary:hover { background: var(--terracotta); color: var(--cream); }
+.crm-btn--ghost { border-color: transparent; background: transparent; color: var(--ink-soft); }
+
+/* connect card */
+.crm-connect {
+  max-width: 460px; margin: clamp(40px, 10vh, 90px) auto; background: var(--cream-2);
+  border: 1px solid rgba(166, 115, 48, 0.3); border-radius: 16px;
+  padding: clamp(26px, 5vw, 40px); box-shadow: var(--shadow-md); text-align: center;
+}
+.crm-connect__title { font: 400 30px var(--f-serif); margin-bottom: 10px; }
+.crm-connect__sub { font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin-bottom: 20px; }
+.crm-field { display: block; text-align: left; margin-bottom: 14px; }
+.crm-field span { display: block; font: 500 13px var(--f-body); color: var(--ink-soft); margin-bottom: 6px; }
+.crm-field input {
+  width: 100%; background: #FFFDF8; border: 1.5px solid rgba(46, 36, 24, 0.2); border-radius: 10px;
+  padding: 12px 14px; font: 400 14px var(--f-body); color: var(--ink); outline: none;
+}
+.crm-field input:focus { border-color: var(--gold); }
+.crm-connect .crm-btn--primary { width: 100%; padding: 13px; margin-top: 4px; }
+.crm-connect__err { font: 500 13px var(--f-body); color: var(--red); margin-top: 12px; }
+.crm-connect__demo { font-size: 12.5px; color: var(--ink-muted); margin-top: 16px; }
+
+/* dashboard */
+.crm-dash { padding-block: clamp(22px, 4vw, 36px) 60px; display: flex; flex-direction: column; gap: 18px; }
+
+/* stat tiles */
+.crm-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.crm-tile {
+  background: var(--cream-2); border: 1px solid rgba(46, 36, 24, 0.12); border-radius: 14px;
+  padding: 18px 20px; box-shadow: 0 6px 18px rgba(42, 33, 26, 0.06);
+}
+.crm-tile__label { font: 600 10.5px var(--f-mono); letter-spacing: 0.14em; color: var(--ink-muted); margin-bottom: 8px; text-transform: uppercase; }
+.crm-tile__value { font: 400 clamp(24px, 3vw, 32px)/1.05 var(--f-serif); color: var(--ink); overflow-wrap: anywhere; }
+.crm-tile__hint { font: 400 12px var(--f-body); color: var(--ink-soft); margin-top: 6px; }
+
+/* panels */
+.crm-panel {
+  background: var(--cream-2); border: 1px solid rgba(46, 36, 24, 0.12); border-radius: 14px;
+  padding: 20px 22px; box-shadow: 0 6px 18px rgba(42, 33, 26, 0.06);
+}
+.crm-panel__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.crm-panel__title { font: 400 18px var(--f-serif); margin-bottom: 14px; }
+.crm-panel__note { font: 400 12px var(--f-body); color: var(--ink-muted); margin-top: 10px; }
+
+.crm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+
+/* answer bars — single series, terracotta only */
+.crm-bars { display: flex; flex-direction: column; gap: 9px; }
+.crm-bar { display: grid; grid-template-columns: minmax(120px, 42%) 1fr auto; align-items: center; gap: 10px; padding: 2px 4px; border-radius: 8px; }
+.crm-bar:hover { background: rgba(46, 36, 24, 0.045); }
+.crm-bar__label { font: 400 13px/1.35 var(--f-body); color: var(--ink); }
+.crm-bar__track { height: 18px; border-radius: 4px; background: rgba(169, 78, 36, 0.1); overflow: hidden; }
+.crm-bar__fill { display: block; height: 100%; width: 0%; background: var(--terracotta); border-radius: 4px; transition: width 0.5s var(--ease); min-width: 2px; }
+.crm-bar__val { font: 500 12px var(--f-mono); color: var(--ink-soft); white-space: nowrap; min-width: 34px; text-align: right; }
+.crm-bar--top .crm-bar__label { font-weight: 600; }
+
+/* timeline — daily bars, same single hue */
+.crm-timeline { display: flex; align-items: flex-end; gap: 4px; height: 110px; padding-top: 8px; }
+.crm-day { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 0; }
+.crm-day__bar { width: 100%; max-width: 34px; background: var(--terracotta); border-radius: 4px 4px 0 0; min-height: 2px; transition: height 0.5s var(--ease); }
+.crm-day__bar--zero { background: rgba(169, 78, 36, 0.14); }
+.crm-day__label { font: 500 9.5px var(--f-mono); color: var(--ink-muted); white-space: nowrap; }
+.crm-day:hover .crm-day__bar { background: var(--terracotta-d); }
+
+/* table */
+.crm-tablewrap { overflow-x: auto; }
+.crm-table { width: 100%; border-collapse: collapse; font: 400 13px var(--f-body); }
+.crm-table th { font: 600 10.5px var(--f-mono); letter-spacing: 0.1em; color: var(--ink-muted); text-transform: uppercase; text-align: left; padding: 8px 10px; border-bottom: 1px solid rgba(46, 36, 24, 0.16); white-space: nowrap; }
+.crm-table td { padding: 9px 10px; border-bottom: 1px solid rgba(46, 36, 24, 0.08); vertical-align: top; color: var(--ink); }
+.crm-table tr:hover td { background: rgba(46, 36, 24, 0.03); }
+.crm-table details summary { cursor: pointer; color: var(--terracotta); font-weight: 500; list-style: none; }
+.crm-table details[open] summary { margin-bottom: 6px; }
+.crm-table details p { font-size: 12.5px; color: var(--ink-soft); max-width: 44ch; margin-bottom: 4px; }
+
+/* tooltip */
+.crm-tip {
+  position: fixed; z-index: 100; pointer-events: none;
+  background: var(--ink); color: var(--cream); font: 500 12px var(--f-body);
+  padding: 7px 10px; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  transform: translate(-50%, calc(-100% - 10px)); white-space: nowrap;
+}
+.crm-tip[hidden] { display: none; }
+
+@media (max-width: 860px) { .crm-tiles { grid-template-columns: 1fr 1fr; } .crm-grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .crm-tiles { grid-template-columns: 1fr 1fr; } .crm-day__label { display: none; } }
