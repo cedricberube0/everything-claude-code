@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Waitlist HQ — Maison des fêtes</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gloock&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="crm.css">
+</head>
+<body class="crm">
+  <header class="crm-header">
+    <div class="crm-wrap crm-header__inner">
+      <a class="brand" href="index.html" aria-label="Maison des fêtes home">
+        <img class="brand__mark" src="assets/logo.png" alt="" width="40" height="40">
+        <span class="brand__text">
+          <span class="brand__name">MAISON DES FÊTES</span>
+          <span class="brand__sub">WAITLIST HQ · PRIVATE</span>
+        </span>
+      </a>
+      <div class="crm-header__actions">
+        <span class="crm-updated" id="crm-updated"></span>
+        <button class="crm-btn" id="crm-refresh" type="button" hidden>↻ Refresh</button>
+        <button class="crm-btn crm-btn--ghost" id="crm-settings" type="button" hidden>Settings</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- connect card -->
+  <main class="crm-wrap">
+    <section class="crm-connect" id="crm-connect">
+      <h1 class="crm-connect__title">Waitlist HQ</h1>
+      <p class="crm-connect__sub">This page is private — it shows live waitlist stats once connected to your Google Sheet endpoint (setup steps in NOTES.md). Your key is saved only in this browser.</p>
+      <label class="crm-field">
+        <span>Apps Script endpoint URL</span>
+        <input id="crm-endpoint" type="url" placeholder="https://script.google.com/macros/s/…/exec  (or type: demo)">
+      </label>
+      <label class="crm-field">
+        <span>Secret key</span>
+        <input id="crm-key" type="password" placeholder="the SECRET you set in the script">
+      </label>
+      <button class="crm-btn crm-btn--primary" id="crm-connect-btn" type="button">Connect</button>
+      <p class="crm-connect__err" id="crm-connect-err" hidden></p>
+      <p class="crm-connect__demo">Just exploring? Type <strong>demo</strong> as the endpoint to see the dashboard with sample data.</p>
+    </section>
+
+    <!-- dashboard -->
+    <section class="crm-dash" id="crm-dash" hidden>
+      <div class="crm-tiles" id="crm-tiles"></div>
+
+      <div class="crm-panel">
+        <h2 class="crm-panel__title">Signups — last 14 days</h2>
+        <div class="crm-timeline" id="crm-timeline"></div>
+      </div>
+
+      <div class="crm-grid" id="crm-charts"></div>
+
+      <div class="crm-panel">
+        <div class="crm-panel__head">
+          <h2 class="crm-panel__title">Submissions</h2>
+          <a class="crm-btn crm-btn--ghost" id="crm-export" download="waitlist.csv" href="#">⬇ Export CSV</a>
+        </div>
+        <div class="crm-tablewrap">
+          <table class="crm-table" id="crm-table">
+            <thead><tr><th>When</th><th>Name</th><th>Email</th><th>Location</th><th>Interest</th><th>Price</th><th>Buying</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="crm-tip" id="crm-tip" hidden></div>
+
+  <script src="crm.js" defer></script>
+</body>
+</html>

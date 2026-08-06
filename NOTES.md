@@ -203,3 +203,45 @@ to a form handler URL and every submission is POSTed there as JSON:
 **Relaunching the full site later:** delete the `#waitlist` block from
 `index.html` plus the `waitlist.css` link and `waitlist.js` script tags.
 Nothing else was touched — the site and quiz come back exactly as they were.
+
+---
+
+## 6. Email-per-signup + your Waitlist HQ dashboard (the mini-CRM)
+
+Two pieces, already built:
+
+- **`apps-script.gs`** — a Google Apps Script that (a) appends every signup
+  to a Google Sheet, (b) emails all the answers to `maisonsdesfetes@gmail.com`,
+  and (c) serves the data (key-protected) to your dashboard.
+- **`crm.html`** — your private "Waitlist HQ" page: stat tiles (total,
+  last-7-days, winning price, top box), a 14-day signup timeline, ranked
+  bar charts for every question (interest, price, buying preference, box
+  types, products, locations), a searchable submissions table with the
+  open-text answers, CSV export, and auto-refresh every 60 s.
+
+### One-time setup (~10 minutes)
+
+1. **Create the Sheet.** Go to sheets.google.com (logged in as
+   maisonsdesfetes@gmail.com) → new blank spreadsheet → name it
+   "MDF Waitlist".
+2. **Add the script.** Extensions → Apps Script → delete the sample code →
+   paste the entire contents of `apps-script.gs` → change `SECRET` to your
+   own long random phrase → save.
+3. **Deploy.** Deploy → New deployment → type: **Web app** →
+   "Execute as: **Me**", "Who has access: **Anyone**" → Deploy → authorize
+   when Google asks → copy the URL ending in `/exec`.
+4. **Wire the form.** In `waitlist.js`, set
+   `WAITLIST_ENDPOINT = 'https://script.google.com/macros/s/…/exec'`
+   and redeploy the site (or send the URL to Claude and it'll be wired in).
+5. **Open your dashboard.** Visit `/crm.html` on your site → paste the same
+   `/exec` URL + your SECRET → Connect. Credentials are stored only in your
+   own browser; the page is noindexed and linked from nowhere.
+
+Then every "Join the Waitlist" click = one email to your inbox + one row in
+the Sheet + your dashboard stats update (it re-pulls every minute, or hit
+Refresh). Type `demo` as the endpoint on crm.html to preview the dashboard
+with sample data before wiring anything.
+
+**Privacy note:** the endpoint returns subscriber emails, so keep the SECRET
+private — anyone with URL+SECRET can read the list. The Sheet itself is also
+your backup/export; nothing is stored on GitHub.
