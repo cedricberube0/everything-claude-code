@@ -25,6 +25,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Gloock&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="waitlist.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -374,7 +375,149 @@
   <!-- reopen pill after dismissal -->
   <button class="quiz-pill" id="quiz-pill" type="button" hidden>🎁 $25 off your first box</button>
 
+  <!-- ============================================================
+       Waitlist overlay — pre-launch gate. The site stays intact
+       behind it (blurred, faded, not clickable). To relaunch the
+       full site later, remove this block + waitlist.css/js includes.
+       ============================================================ -->
+  <div class="wl" id="waitlist" role="dialog" aria-modal="true" aria-labelledby="wl-title">
+    <div class="wl__scroll">
+      <div class="wl__card" id="wl-card" tabindex="-1">
+
+        <header class="wl__head">
+          <img class="wl__mark" src="assets/logo.png" alt="" width="64" height="64">
+          <p class="wl__kicker">MAISON DES FÊTES · HOUSE OF CELEBRATIONS</p>
+          <h1 class="wl__title" id="wl-title">Join the Maison des Fêtes Waitlist</h1>
+          <p class="wl__sub">We’re creating a seasonal decor box filled with handmade pieces from local Ontario makers. Join the waitlist to get first access, help shape the first box, and receive important updates before the first drop becomes available.</p>
+        </header>
+
+        <div class="wl__divider" aria-hidden="true">
+          <svg viewBox="0 0 74 14" class="wl__leaf"><path d="M2 7 H28 M46 7 H72" stroke="currentColor" stroke-width="1"/><path d="M37 2 C33 4 31 6 30.5 9 C34 8.6 36 7 37 4.5 C38 7 40 8.6 43.5 9 C43 6 41 4 37 2 Z" fill="currentColor"/><circle cx="37" cy="11.4" r="1.1" fill="currentColor"/></svg>
+        </div>
+
+        <form class="wl__form" id="wl-form" novalidate>
+
+          <p class="wl__section">ABOUT YOU</p>
+
+          <label class="wl__field">
+            <span class="wl__label">What’s your name? <em class="wl__req">*</em></span>
+            <input class="wl__input" type="text" name="name" autocomplete="name" required>
+          </label>
+
+          <label class="wl__field">
+            <span class="wl__label">What email should we use to send waitlist updates? <em class="wl__req">*</em></span>
+            <input class="wl__input" type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+          </label>
+
+          <label class="wl__field">
+            <span class="wl__label">Where are you located?</span>
+            <input class="wl__input" type="text" name="location" autocomplete="address-level2" placeholder="Ottawa, Sudbury, Toronto, etc.">
+          </label>
+
+          <div class="wl__divider" aria-hidden="true"><svg viewBox="0 0 74 14" class="wl__leaf"><path d="M2 7 H28 M46 7 H72" stroke="currentColor" stroke-width="1"/><path d="M37 2 C33 4 31 6 30.5 9 C34 8.6 36 7 37 4.5 C38 7 40 8.6 43.5 9 C43 6 41 4 37 2 Z" fill="currentColor"/><circle cx="37" cy="11.4" r="1.1" fill="currentColor"/></svg></div>
+          <p class="wl__section">THE BOX</p>
+
+          <fieldset class="wl__group" data-group="interest">
+            <legend class="wl__label">How interested would you be in a seasonal/holiday decor box made with local handmade pieces? <em class="wl__req">*</em></legend>
+            <div class="wl__options">
+              <label class="wl__opt"><input type="radio" name="interest" value="Very interested"><span>Very interested</span></label>
+              <label class="wl__opt"><input type="radio" name="interest" value="Interested, depending on the box"><span>Interested, depending on the box</span></label>
+              <label class="wl__opt"><input type="radio" name="interest" value="Maybe, I'd like to learn more"><span>Maybe, I’d like to learn more</span></label>
+              <label class="wl__opt"><input type="radio" name="interest" value="Not sure yet"><span>Not sure yet</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="wl__group">
+            <legend class="wl__label">What type of box would you be most excited for?</legend>
+            <div class="wl__options wl__options--grid">
+              <label class="wl__opt"><input type="checkbox" name="boxtypes" value="Autumn / fall decor box"><span>Autumn / fall decor box</span></label>
+              <label class="wl__opt"><input type="checkbox" name="boxtypes" value="Christmas / holiday decor box"><span>Christmas / holiday decor box</span></label>
+              <label class="wl__opt"><input type="checkbox" name="boxtypes" value="Winter cozy home box"><span>Winter cozy home box</span></label>
+              <label class="wl__opt"><input type="checkbox" name="boxtypes" value="Spring / Easter decor box"><span>Spring / Easter decor box</span></label>
+              <label class="wl__opt"><input type="checkbox" name="boxtypes" value="Summer home box"><span>Summer home box</span></label>
+              <label class="wl__opt"><input type="checkbox" name="boxtypes" value="Halloween decor box"><span>Halloween decor box</span></label>
+              <label class="wl__opt"><input type="checkbox" name="boxtypes" value="Thanksgiving decor box"><span>Thanksgiving decor box</span></label>
+              <label class="wl__opt"><input type="checkbox" name="boxtypes" value="I'd be interested in multiple boxes per year"><span>I’d be interested in multiple boxes per year</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="wl__group">
+            <legend class="wl__label">Which items would you be most excited to receive in a box?</legend>
+            <div class="wl__options wl__options--grid">
+              <label class="wl__opt"><input type="checkbox" name="products" value="Handmade ceramic decor"><span>Handmade ceramic decor</span></label>
+              <label class="wl__opt"><input type="checkbox" name="products" value="Handmade candles"><span>Handmade candles</span></label>
+              <label class="wl__opt"><input type="checkbox" name="products" value="Wooden decor pieces"><span>Wooden decor pieces</span></label>
+              <label class="wl__opt"><input type="checkbox" name="products" value="Crochet or fabric handmade items"><span>Crochet or fabric handmade items</span></label>
+              <label class="wl__opt"><input type="checkbox" name="products" value="Seasonal coasters"><span>Seasonal coasters</span></label>
+              <label class="wl__opt"><input type="checkbox" name="products" value="Stained glass decor"><span>Stained glass decor</span></label>
+              <label class="wl__opt"><input type="checkbox" name="products" value="Local chocolate or treats"><span>Local chocolate or treats</span></label>
+              <label class="wl__opt"><input type="checkbox" name="products" value="Mini garlands / greenery / dried florals"><span>Mini garlands / greenery / dried florals</span></label>
+              <label class="wl__opt"><input type="checkbox" name="products" value="Styling cards showing how to use everything"><span>Styling cards showing how to use everything</span></label>
+              <label class="wl__opt"><input type="checkbox" name="products" value="Local maker story cards"><span>Local maker story cards</span></label>
+            </div>
+          </fieldset>
+
+          <div class="wl__divider" aria-hidden="true"><svg viewBox="0 0 74 14" class="wl__leaf"><path d="M2 7 H28 M46 7 H72" stroke="currentColor" stroke-width="1"/><path d="M37 2 C33 4 31 6 30.5 9 C34 8.6 36 7 37 4.5 C38 7 40 8.6 43.5 9 C43 6 41 4 37 2 Z" fill="currentColor"/><circle cx="37" cy="11.4" r="1.1" fill="currentColor"/></svg></div>
+          <p class="wl__section">THE DETAILS</p>
+
+          <fieldset class="wl__group" data-group="price">
+            <legend class="wl__label">What price would feel reasonable for a premium handmade decor box? <em class="wl__req">*</em></legend>
+            <div class="wl__options">
+              <label class="wl__opt"><input type="radio" name="price" value="Under $150"><span>Under $150</span></label>
+              <label class="wl__opt"><input type="radio" name="price" value="$150-$199"><span>$150–$199</span></label>
+              <label class="wl__opt"><input type="radio" name="price" value="$200-$249"><span>$200–$249</span></label>
+              <label class="wl__opt"><input type="radio" name="price" value="$250-$299"><span>$250–$299</span></label>
+              <label class="wl__opt"><input type="radio" name="price" value="$300+ if the items feel worth it"><span>$300+ if the items feel worth it</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="wl__group" data-group="buying">
+            <legend class="wl__label">Which option would interest you most? <em class="wl__req">*</em></legend>
+            <div class="wl__options">
+              <label class="wl__opt"><input type="radio" name="buying" value="One-time box only"><span>One-time box only</span></label>
+              <label class="wl__opt"><input type="radio" name="buying" value="Seasonal membership with recurring boxes"><span>Seasonal membership with recurring boxes</span></label>
+              <label class="wl__opt"><input type="radio" name="buying" value="I'd try one box first, then maybe subscribe"><span>I’d try one box first, then maybe subscribe</span></label>
+              <label class="wl__opt"><input type="radio" name="buying" value="Buying as a gift for someone else"><span>Buying as a gift for someone else</span></label>
+              <label class="wl__opt"><input type="radio" name="buying" value="Not sure yet"><span>Not sure yet</span></label>
+            </div>
+          </fieldset>
+
+          <div class="wl__divider" aria-hidden="true"><svg viewBox="0 0 74 14" class="wl__leaf"><path d="M2 7 H28 M46 7 H72" stroke="currentColor" stroke-width="1"/><path d="M37 2 C33 4 31 6 30.5 9 C34 8.6 36 7 37 4.5 C38 7 40 8.6 43.5 9 C43 6 41 4 37 2 Z" fill="currentColor"/><circle cx="37" cy="11.4" r="1.1" fill="currentColor"/></svg></div>
+          <p class="wl__section">YOUR TWO CENTS</p>
+
+          <label class="wl__field">
+            <span class="wl__label">What would make this box feel truly worth buying?</span>
+            <textarea class="wl__input wl__textarea" name="feedback" rows="4" placeholder="Tell us what you’d love to see inside, what would make it feel premium, or what would make you excited to buy."></textarea>
+          </label>
+
+          <label class="wl__field">
+            <span class="wl__label">Do you know a local maker, chocolatier, ceramic artist, candle maker, stained glass artist, woodworker, or artisan we should check out?</span>
+            <textarea class="wl__input wl__textarea" name="maker" rows="3" placeholder="Name, Instagram, website, or any details you have."></textarea>
+          </label>
+
+          <label class="wl__consent" data-group="consent">
+            <input type="checkbox" name="consent" value="yes" required>
+            <span>Yes, I’d like to receive updates about the first Maison des Fêtes decor box, waitlist access, and future seasonal drops. <em class="wl__req">*</em></span>
+          </label>
+
+          <p class="wl__error" id="wl-error" hidden>Please fill in the required fields marked in red.</p>
+
+          <button class="wl__cta" type="submit">Join the Waitlist</button>
+          <p class="wl__trustline">No spam. Just first access, updates, and early box details.</p>
+        </form>
+
+        <div class="wl__success" id="wl-success" hidden>
+          <div class="wl__divider" aria-hidden="true"><svg viewBox="0 0 74 14" class="wl__leaf"><path d="M2 7 H28 M46 7 H72" stroke="currentColor" stroke-width="1"/><path d="M37 2 C33 4 31 6 30.5 9 C34 8.6 36 7 37 4.5 C38 7 40 8.6 43.5 9 C43 6 41 4 37 2 Z" fill="currentColor"/><circle cx="37" cy="11.4" r="1.1" fill="currentColor"/></svg></div>
+          <h2 class="wl__success-title">You’re on the list 🎉</h2>
+          <p class="wl__success-text">You’re on the Maison des Fêtes waitlist. Thank you for helping us bring local handmade seasonal decor into more homes. We’ll send updates as the first box comes together.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <script src="script.js" defer></script>
   <script src="popup.js" defer></script>
+  <script src="waitlist.js" defer></script>
 </body>
 </html>
