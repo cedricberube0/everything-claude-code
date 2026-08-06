@@ -32,6 +32,10 @@
   var quiz = $('#quiz');
   if (!quiz) return;
 
+  // Waitlist mode: while the pre-launch overlay exists, the quiz stands
+  // down entirely. Remove the #waitlist block and the quiz returns.
+  if ($('#waitlist')) return;
+
   var pill = $('#quiz-pill');
   var answer = null;
   var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

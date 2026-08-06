@@ -173,3 +173,33 @@ Config lives at the top of `popup.js` (code, page mapping, box items).
 
 **Funnel measurement:** each answer lands on its own URL, so in GA4 (or even
 Stripe) you can see which motivation converts best — that's your ad angle.
+
+---
+
+## 5. The waitlist overlay (pre-launch mode)
+
+The homepage is currently gated by a full-page waitlist overlay: the site
+stays fully intact behind it (blurred, faded, unclickable) and the form is
+the only entry point. The quiz popup automatically stands down while the
+overlay exists.
+
+**Where things live:** markup is the `#waitlist` block at the bottom of
+`index.html`; styles in `waitlist.css`; validation/submission in
+`waitlist.js`.
+
+**Collecting the responses for real:** submissions are currently saved only
+in each visitor's own browser (`localStorage.mdf_waitlist`) — you can't see
+them. To receive them, set `WAITLIST_ENDPOINT` at the top of `waitlist.js`
+to a form handler URL and every submission is POSTed there as JSON:
+
+- **Formspree** (easiest, free tier): create a form at formspree.io, copy
+  the `https://formspree.io/f/XXXX` URL in — done. Entries arrive in your
+  Formspree dashboard + email, exportable to CSV.
+- **Google Sheets**: a small Apps Script web app that appends rows.
+- **Mailchimp/Klaviyo**: use their form endpoint; the JSON field names
+  (name, email, location, interest, boxTypes, products, price, buying,
+  feedback, maker, consent) map cleanly to merge fields/properties.
+
+**Relaunching the full site later:** delete the `#waitlist` block from
+`index.html` plus the `waitlist.css` link and `waitlist.js` script tags.
+Nothing else was touched — the site and quiz come back exactly as they were.
